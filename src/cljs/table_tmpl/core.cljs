@@ -18,6 +18,8 @@
        :template-string "select * from {{col1}} where price = {{col2}} and created_date = '{{#date}}col3|MM-DD-YYYY{{/date}}';"
        :max-sample-col 1
        :max-sample 3
+       :sample-page 0
+       :uploading? false
        :head? true
        :data-section-close? true}))
 
@@ -40,10 +42,12 @@
     (swap! all assoc :data-uri (.createObjectURL js/window.URL blob))))
 
 (defn convert-file [form]
+  (swap! app assoc :uploading? true)
   (POST (str "/api/any2json?head=" (:head? @app))
         {:body (js/FormData. form)
-         :handler #(do (swap! app assoc :data %)
-                       (csv-data app))}))
+         :handler #(do (swap! app assoc :data % :uploading? false)
+                       (csv-data app))
+         :error-handler #(swap! app assoc :uploading? false)}))
 
 (defn nav-link [uri title page collapsed?]
   [:li.nav-item
@@ -68,16 +72,21 @@
   (let [drag? (r/atom false)]
     (fn []
       [:form#inputform
-        {:on-dragover #(println %) ;#(reset! drag? true)
-         :on-drag #(println %) ;#(reset! drag? true)
-         :on-dragenter #(println %) ;#(reset! drag? true)
-         :on-dragend #(println %) ;#(reset! drag? false)
-         :on-drop #(println %) ;#(reset! drag? false)
-         :on-dragleave #(println %) ;#(reset! drag? assoc :dragfile? false)
-         :class (when @drag? "dragover")}
+        {:on-dragover #(reset! drag? true)
+         :on-drag #(reset! drag? true)
+         :on-dragenter #(reset! drag? true)
+         :on-dragend #(reset! drag? false)
+         :on-drop #(reset! drag? false)
+         :on-dragleave #(reset! drag? assoc :dragfile? false)
+         :class (str (when (:uploading? @app) "uploading") " " (when @drag? "dragover"))}
         [:div.uploadarea
           [:input {:type "file" :name "file"
-                   :on-change #(convert-file (.getElementById js/document "inputform"))}]]])))
+                   :on-change #(convert-file (.getElementById js/document "inputform"))}]]
+        [:div.spinner
+          [:div.rect1]
+          [:div.rect2]
+          [:div.rect3]
+          [:div.rect4]]])))
 
 (defn output-table [app]
   (fn []
@@ -87,24 +96,26 @@
         (if (and (> (count rows) 0) (map? (first rows)))
           [:thead
             [:tr
-              (for [[nam val] (take (:max-sample-col @app) (first rows))]
-                ^{:key nam}
-                [:th.sample-col nam])
-              [:th {:style {:width "90%"}} "Output"]]])
+              (doall
+                (for [[nam val] (take (:max-sample-col @app) (first rows))]
+                  ^{:key nam}
+                  [:th.sample-col nam])
+                [:th {:style {:width "90%"}} "Output"])]])
         [:tbody
-          (for [row (take (:max-sample @app) rows)]
-            ^{:key row}
-            [:tr
-              (for [[nam val] (take (:max-sample-col @app) row)]
-                ^{:key val}
-                [:td.sample-col
-                  (cond
-                    (string? val)
-                    val
-                    :default (str val))])
-              [:td
-                [:pre
-                  (js/Mustache.render template-string (clj->js (merge row {:date date-format})))]]])]])))
+          (doall
+            (for [row (take (:max-sample @app) (drop (* (:sample-page @app) (:max-sample @app)) rows))]
+              ^{:key row}
+              [:tr
+                (for [[nam val] (take (:max-sample-col @app) row)]
+                  ^{:key val}
+                  [:td.sample-col
+                    (cond
+                      (string? val)
+                      val
+                      :default (str val))])
+                [:td
+                  [:pre
+                    (js/Mustache.render template-string (clj->js (merge row {:date date-format})))]]]))]])))
 
 (defn data-table [app]
   (fn []
@@ -117,7 +128,7 @@
                 ^{:key nam}
                 [:th nam])]])
         [:tbody
-          (for [row (take (:max-sample @app) rows)]
+          (for [row (take (:max-sample @app) (drop (* (:sample-page @app) (:max-sample @app)) rows))]
             ^{:key row}
             [:tr
               (for [[nam val] (take 12 row)]
@@ -134,10 +145,10 @@
       [:h4.section-head
         [:span "Upload Any Data in CSV Excel JSON Format"]]
       [uploadarea]
-      [:label "load with header? "]
-      [:input {:type "checkbox"
-               :checked (:head? @app)
-               :on-change #(swap! app update :head? not)}]
+      [:label "load with header? "
+        [:input {:type "checkbox"
+                 :checked (:head? @app)
+                 :on-change #(swap! app update :head? not)}]]
       [:h4.section-head
         [:span "Template"]]
       [:div.string-template-wrap
@@ -162,13 +173,26 @@
          {:class (if (:data-section-close? @app) "col-lg-2" "col-lg-12")}
          [:h4.section-head
            [:span (str "Data (" (count (:data @app)) ")")]
-           [:a {:href "/#/"
-                :on-click #(swap! app update :data-section-close? not)}
-             [:i.fa
-               {:class (if (:data-section-close? @app) "fa-plus-square-o" "fa-minus-square-o")}]]]
+           [:span
+             (when-not (:data-section-close? @app)
+               [:a {:href "/#/"
+                    :on-click #(swap! app update :sample-page dec)}
+                 [:i.fa.fa-chevron-left]])
+             [:span (str " [" (inc (:sample-page @app)) "] ")]
+             (when-not (:data-section-close? @app)
+               [:a
+                   {:href "/#/"
+                    :on-click #(swap! app update :sample-page inc)}
+                 [:i.fa.fa-chevron-right]])
+             [:a.some-space
+                 {:href "/#/"
+                  :on-click #(swap! app update :data-section-close? not)}
+               [:i.fa
+                 {:class (if (:data-section-close? @app) "fa-plus-square-o" "fa-minus-square-o")}]]]]
          (if (:data-section-close? @app)
            [:ul.field-list
              (for [[nam val] (-> @app :data first)]
+               ^{:key (str "{{" (name nam) "}}")}
                [:li (str "{{" (name nam) "}}")])]
            [data-table app])]]]])
 

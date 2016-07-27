@@ -31,6 +31,7 @@
                  [luminus-nrepl "0.1.4"]
                  [org.webjars/webjars-locator-jboss-vfs "0.1.0"]
                  [dk.ative/docjure "1.10.0"]
+                 [clojure-csv "2.0.1"]
                  [luminus-immutant "0.2.2"]]
 
   :min-lein-version "2.0.0"
