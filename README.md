@@ -1,8 +1,6 @@
 # table-tmpl
 
-generated using Luminus version "2.9.10.81"
-
-FIXME
+A Simple tools to transform tabular data to strings
 
 ## Prerequisites
 
@@ -18,4 +16,4 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 ALGO Technologies Limited
