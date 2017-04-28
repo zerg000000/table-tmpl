@@ -1,0 +1,198 @@
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/table_tmpl/core.cljs   line:149  column:21  ----[0m
+
+  [1mWrong number of args (3) passed to cljs.core/take[0m
+
+  [36m146[0m  [36m(defn update-sample [app counter][0m
+  [36m147[0m  [36m  (let [sample-page (+ (:sample-page @app) counter)[0m
+  [36m148[0m  [36m        max-sample (:max-sample @app)[0m
+  [33m149[0m  [1m        sample-data (take max-sample (drop (* sample-page max-sample)) rows)][0m
+  [0m   [0m  [33m                    ^--- Wrong number of args (3) passed to cljs.core/take[0m
+  [36m150[0m  [36m    (assoc app :sample-page sample-page :sample-data sample-data)))[0m
+  [36m151[0m  [36m[0m
+  [36m152[0m  [36m(defn home-page [][0m
+  [36m153[0m  [36m  [:div.container[0m
+  [36m154[0m  [36m    [:div.row[0m
+
+[36m----  Compiler Warning : Please see src/cljs/table_tmpl/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/table_tmpl/core.cljs   line:149  column:72  ----[0m
+
+  [1mUse of undeclared Var table-tmpl.core/rows[0m
+
+  [36m146[0m  [36m(defn update-sample [app counter][0m
+  [36m147[0m  [36m  (let [sample-page (+ (:sample-page @app) counter)[0m
+  [36m148[0m  [36m        max-sample (:max-sample @app)[0m
+  [33m149[0m  [1m        sample-data (take max-sample (drop (* sample-page max-sample)) rows)][0m
+  [0m   [0m  [33m                                                                       ^--- Use of undeclared Var table-tmpl.core/rows[0m
+  [36m150[0m  [36m    (assoc app :sample-page sample-page :sample-data sample-data)))[0m
+  [36m151[0m  [36m[0m
+  [36m152[0m  [36m(defn home-page [][0m
+  [36m153[0m  [36m  [:div.container[0m
+  [36m154[0m  [36m    [:div.row[0m
+
+[36m----  Compiler Warning : Please see src/cljs/table_tmpl/core.cljs  ----[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.637 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/goog/deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/table_tmpl/core.cljs   line:149  column:21  ----[0m
+
+  [1mWrong number of args (3) passed to cljs.core/take[0m
+
+  [36m146[0m  [36m(defn update-sample [app counter][0m
+  [36m147[0m  [36m  (let [sample-page (+ (:sample-page @app) counter)[0m
+  [36m148[0m  [36m        max-sample (:max-sample @app)[0m
+  [33m149[0m  [1m        sample-data (take max-sample (drop (* sample-page max-sample)) (:data @app))][0m
+  [0m   [0m  [33m                    ^--- Wrong number of args (3) passed to cljs.core/take[0m
+  [36m150[0m  [36m    (assoc app :sample-page sample-page :sample-data sample-data)))[0m
+  [36m151[0m  [36m[0m
+  [36m152[0m  [36m(defn home-page [][0m
+  [36m153[0m  [36m  [:div.container[0m
+  [36m154[0m  [36m    [:div.row[0m
+
+[36m----  Compiler Warning : Please see src/cljs/table_tmpl/core.cljs  ----[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.428 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.371 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.484 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.546 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.376 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.371 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.394 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.367 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 1.158 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.716 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.76 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/table_tmpl/core.cljs   line:120  column:8  ----[0m
+
+  [1mUse of undeclared Var table-tmpl.core/pritnln[0m
+
+  [36m116[0m  [36m(defn data-table [app][0m
+  [36m117[0m  [36m  (fn [][0m
+  [36m118[0m  [36m    (let [rows (:sample-data @app)[0m
+  [36m119[0m  [36m          names (keys (first rows))][0m
+  [33m120[0m  [1m      (pritnln names)[0m
+  [0m   [0m  [33m       ^--- Use of undeclared Var table-tmpl.core/pritnln[0m
+  [36m121[0m  [36m      [:table.table[0m
+  [36m122[0m  [36m        (if (> (count rows) 0)[0m
+  [36m123[0m  [36m          [:thead[0m
+  [36m124[0m  [36m            [:tr[0m
+  [36m125[0m  [36m              (for [nam names][0m
+
+[36m----  Compiler Warning : Please see src/cljs/table_tmpl/core.cljs  ----[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 1.081 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.616 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.437 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.332 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.357 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.359 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.344 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.317 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.328 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.342 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.354 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.331 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+sending changed CSS file: resources/public/css/screen.css
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.329 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.335 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.361 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.328 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.347 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.322 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.385 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.344 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.336 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.332 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.342 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.322 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.339 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.321 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.326 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.288 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.289 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.318 seconds.[0m
+notifying browser that file changed:  out/table_tmpl/core.js
+[0mCompiling "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...[0m
+[32mSuccessfully compiled "target/cljsbuild/public/js/app.js" in 0.279 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  out/table_tmpl/core.js
