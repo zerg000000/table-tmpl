@@ -5,8 +5,7 @@
             [schema.core :as s]
             [cheshire.core :as json]
             [dk.ative.docjure.spreadsheet :as excel]
-            [clojure-csv.core :as csv]
-            [clostache.parser :as mustache]))
+            [clojure-csv.core :as csv]))
 
 (def AZ (map #(keyword (str %)) "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 

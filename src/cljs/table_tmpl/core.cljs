@@ -11,16 +11,18 @@
             [ajax.core :refer [GET POST]])
   (:import goog.History))
 
-(def app
+(defonce app
   (r/atom
       {:data [{:col1 "table_name" :col2 123.2 :col3 (js/Date.)} {:col1 "table_name" :col2 28 :col3 (js/Date.)}]
+       :sample-data [{:col1 "table_name" :col2 123.2 :col3 (js/Date.)} {:col1 "table_name" :col2 28 :col3 (js/Date.)}]
        :template-string-sample "your template string like: select * from {{col1}} where price = {{col2}} and created_date = '{{#date}}col3|MM-DD-YYYY{{/date}}';"
        :template-string "select * from {{col1}} where price = {{col2}} and created_date = '{{#date}}col3|MM-DD-YYYY{{/date}}';"
-       :max-sample-col 1
+       :max-sample-col 0
        :max-sample 3
        :sample-page 0
        :uploading? false
        :head? true
+       :csv-status :not-ready
        :data-section-close? true}))
 
 (defn date-format []
@@ -31,6 +33,7 @@
         (.format (js/moment. val) fmt)))))
 
 (defn csv-data [all]
+  (swap! all assoc :csv-status :processing)
   (let [{:keys [template-string data data-uri]} @all
         csv-str (clojure.string/join
                   "\n"
@@ -39,33 +42,23 @@
                     data))
         blob (js/Blob. #js [csv-str] #js {:type "text/plain"})]
     (.revokeObjectURL js/window.URL data-uri)
-    (swap! all assoc :data-uri (.createObjectURL js/window.URL blob))))
+    (swap! all assoc :data-uri (.createObjectURL js/window.URL blob) :csv-status :ready)))
 
 (defn convert-file [form]
   (swap! app assoc :uploading? true)
   (POST (str "/api/any2json?head=" (:head? @app))
         {:body (js/FormData. form)
-         :handler #(do (swap! app assoc :data % :uploading? false)
+         :handler #(do (swap! app assoc :data % :sample-data (take (:max-sample @app) %) :sample-keys (keys (first %)) :sample-page 0 :uploading? false)
                        (csv-data app))
          :error-handler #(swap! app assoc :uploading? false)}))
 
-(defn nav-link [uri title page collapsed?]
-  [:li.nav-item
-   {:class (when (= page (session/get :page)) "active")}
-   [:a.nav-link
-    {:href uri
-     :on-click #(reset! collapsed? true)} title]])
+(defn spinner []
+  [:div.spinner
+    [:div.rect1]
+    [:div.rect2]
+    [:div.rect3]
+    [:div.rect4]])
 
-(defn navbar []
-  (let [collapsed? (r/atom true)]
-    (fn []
-      [:nav.navbar.navbar-light.bg-faded
-       [:button.navbar-toggler.hidden-sm-up
-        {:on-click #(swap! collapsed? not)} "☰"]
-       [:div.collapse.navbar-toggleable-xs
-        (when-not @collapsed? {:class "in"})
-        [:a.navbar-brand {:href "#/"} "Table Templating"]
-        [:ul.nav.navbar-nav]]])))
 
 (defn uploadarea []
   (let [drag? (r/atom false)]
@@ -81,79 +74,64 @@
         [:div.uploadarea
           [:input {:type "file" :name "file"
                    :on-change #(convert-file (.getElementById js/document "inputform"))}]]
-        [:div.spinner
-          [:div.rect1]
-          [:div.rect2]
-          [:div.rect3]
-          [:div.rect4]]])))
+        [spinner]])))
 
 (defn output-table [app]
   (fn []
-    (let [rows (:data @app)
+    (let [rows (:sample-data @app)
           {:keys [template-type template-string]} @app]
       [:table.table
-        (if (and (> (count rows) 0) (map? (first rows)))
-          [:thead
-            [:tr
-              (doall
-                (for [[nam val] (take (:max-sample-col @app) (first rows))]
-                  ^{:key nam}
-                  [:th.sample-col nam])
-                [:th {:style {:width "90%"}} "Output"])]])
         [:tbody
           (doall
-            (for [row (take (:max-sample @app) (drop (* (:sample-page @app) (:max-sample @app)) rows))]
+            (for [row rows]
               ^{:key row}
               [:tr
-                (for [[nam val] (take (:max-sample-col @app) row)]
-                  ^{:key val}
-                  [:td.sample-col
-                    (cond
-                      (string? val)
-                      val
-                      :default (str val))])
                 [:td
                   [:pre
                     (js/Mustache.render template-string (clj->js (merge row {:date date-format})))]]]))]])))
 
 (defn data-table [app]
   (fn []
-    (let [rows (:data @app)]
+    (let [rows (:sample-data @app)
+          names (:sample-keys @app)]
       [:table.table
-        (if (and (> (count rows) 0) (map? (first rows)))
+        (if (> (count rows) 0)
           [:thead
             [:tr
-              (for [[nam val] (take 12 (first rows))]
+              (for [nam names]
                 ^{:key nam}
                 [:th nam])]])
         [:tbody
-          (for [row (take (:max-sample @app) (drop (* (:sample-page @app) (:max-sample @app)) rows))]
+          (for [row rows]
             ^{:key row}
             [:tr
-              (for [[nam val] (take 12 row)]
-                ^{:key val}
-                [:td
-                  (cond
-                    (string? val)
-                    val
-                    :default (str val))])])]])))
+              (for [nam names]
+                ^{:key (str nam row)}
+                [:td (str (nam row))])])]])))
+
+(defn update-sample [app counter]
+  (let [sample-page (+ (:sample-page app) counter)
+        max-sample (:max-sample app)
+        sample-data (take max-sample (drop (* sample-page max-sample) (:data app)))]
+    (assoc app :sample-page sample-page :sample-data sample-data)))
 
 (defn home-page []
   [:div.container
     [:div.row
       [:h4.section-head
-        [:span "Upload Any Data in CSV Excel JSON Format"]]
+        [:span "Upload Any Data (e.g CSV, Excel, JSON)"]]
       [uploadarea]
       [:label "load with header? "
         [:input {:type "checkbox"
                  :checked (:head? @app)
                  :on-change #(swap! app update :head? not)}]]
       [:h4.section-head
-        [:span "Template"]]
+        [:span "Template"]
+        [:span 
+             [:a {:href "https://mustache.github.io/mustache.5.html" :self "_blank"} "Syntax"]]]
       [:div.string-template-wrap
         [:textarea.string-template
-          {:on-change #(do (swap! app assoc :template-string (-> % .-target .-value))
-                           (csv-data app))
+          {:on-change #(do (swap! app assoc :template-string (-> % .-target .-value) :csv-status :not-ready))
            :placeholder (:template-string-sample @app)
            :value (:template-string @app)}]]
      [:hr]
@@ -162,11 +140,17 @@
          {:class (if (:data-section-close? @app) "col-lg-10" "col-lg-12")}
          [:h4.section-head
            [:span "Output"]
-           [:a
-             {:href (:data-uri @app)
-              :download "export.txt"
-              :title "Export all output"}
-             [:i.fa.fa-download]]]
+           (condp = (:csv-status @app)
+             :ready
+             [:a
+               {:href (:data-uri @app)
+                :download "export.txt"
+                :title "Export all output"}
+               [:i.fa.fa-download]]
+             :processing
+             [:a "Processing"]
+             :not-ready
+             [:a {:href "#" :on-click #(csv-data app)} "Export"])]
          [output-table app]]
        [:div.data
          {:class (if (:data-section-close? @app) "col-lg-2" "col-lg-12")}
@@ -175,13 +159,13 @@
            [:span
              (when-not (:data-section-close? @app)
                [:a {:href "/#/"
-                    :on-click #(swap! app update :sample-page dec)}
+                    :on-click #(swap! app update-sample -1)}
                  [:i.fa.fa-chevron-left]])
              [:span (str " [" (inc (:sample-page @app)) "] ")]
              (when-not (:data-section-close? @app)
                [:a
                    {:href "/#/"
-                    :on-click #(swap! app update :sample-page inc)}
+                    :on-click #(swap! app update-sample 1)}
                  [:i.fa.fa-chevron-right]])
              [:a.some-space
                  {:href "/#/"
@@ -195,27 +179,8 @@
                [:li (str "{{" (name nam) "}}")])]
            [data-table app])]]]])
 
-
-
-
-;(defn home-page []
-;  [:div.container
-;   [:div.jumbotron
-;    [:h1 "Welcome to table-tmpl"]
-;    [:p "Time to start building your site!"]
-;    [:p [:a.btn.btn-primary.btn-lg {:href "http://luminusweb.net"} "Learn more »"]]]
-;   [:div.row
-;    [:div.col-md-12
-;     [:h2 "Welcome to ClojureScript"]]]
-;   (when-let [docs (session/get :docs)]
-;     [:div.row
-;      [:div.col-md-12
-;       [:div {:dangerouslySetInnerHTML
-;              {:__html (md->html docs)}}]]])])
-
 (def pages
-  {:home #'home-page
-   :about #'home-page})
+  {:home #'home-page})
 
 (defn page []
   [(pages (session/get :page))])
@@ -240,15 +205,11 @@
 
 ;; -------------------------
 ;; Initialize app
-(defn fetch-docs! []
-  (GET (str js/context "/docs") {:handler #(session/put! :docs %)}))
 
 (defn mount-components []
-  (r/render [#'navbar] (.getElementById js/document "navbar"))
   (r/render [#'page] (.getElementById js/document "app")))
 
 (defn init! []
   (load-interceptors!)
-  (fetch-docs!)
   (hook-browser-navigation!)
   (mount-components))

@@ -93,6 +93,10 @@ body {
 
 }
 
+.table {
+  overflow-x: scroll;
+}
+
 
 
 @media (min-width: 34em) {

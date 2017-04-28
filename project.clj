@@ -1,8 +1,6 @@
 (defproject table-tmpl "0.1.0-SNAPSHOT"
-
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-
+  :description "Simple Tool for templating tabular data"
+  :url "https://github.com/zerg000000/table-tmpl"
   :dependencies [[metosin/compojure-api "1.1.4"]
                  [cljs-ajax "0.5.8"]
                  [secretary "1.2.3"]
@@ -10,8 +8,8 @@
                  [reagent "0.6.0-rc"]
                  [org.clojure/clojurescript "1.9.93" :scope "provided"]
                  [cljsjs/mustache "1.1.0-0"]
-                 [de.ubercode.clostache/clostache "1.4.0"]
                  [cljsjs/moment "2.10.6-4"]
+                 ;[cljsjs/fixed-data-table "0.6.0-1"]
                  [org.clojure/clojure "1.8.0"]
                  [selmer "1.0.7"]
                  [markdown-clj "0.9.89"]
